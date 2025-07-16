@@ -1,10 +1,79 @@
-@import "tailwindcss";
+/* styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Playfair Display", serif;
+@layer base {
+  * {
+    @apply box-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-primary-darker text-white;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    cursor: auto;
+  }
+
+  * {
+    cursor: inherit;
+  }
+
+  a,
+  button,
+  [role="button"] {
+    cursor: pointer !important;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-glass-white backdrop-blur-md border border-glass-border rounded-2xl;
+    box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #00d4ff, #b829dd);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .neon-text {
+    text-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff, 0 0 30px #00d4ff;
+  }
+}
+
+/* Custom animations */
+@keyframes float {
+  0% {
+    transform: translateY(100vh) scale(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0) scale(0);
+  }
+}
+
+@keyframes glitch {
+  0%,
+  100% {
+    text-shadow: 0 0 20px #00d4ff, 0 0 40px #00d4ff, 0 0 60px #00d4ff;
+  }
+  20% {
+    text-shadow: -3px 0 20px #ff006e, 3px 0 20px #b829dd, 0 0 40px #00d4ff;
+  }
+  40% {
+    text-shadow: 3px 0 20px #b829dd, -3px 0 20px #ff006e, 0 0 60px #00d4ff;
+  }
 }

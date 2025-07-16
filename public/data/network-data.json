@@ -1,0 +1,14 @@
+{
+  "nodes": [
+    { "id": 1, "name": "Mining Corp A", "group": "mining", "value": 100 },
+    { "id": 2, "name": "Data Co X", "group": "data", "value": 80 },
+    { "id": 3, "name": "Mining Corp B", "group": "mining", "value": 120 },
+    { "id": 4, "name": "Tech Giant Y", "group": "data", "value": 150 }
+  ],
+  "links": [
+    { "source": 1, "target": 2, "value": 10, "confidence": 85 },
+    { "source": 1, "target": 4, "value": 15, "confidence": 92 },
+    { "source": 3, "target": 2, "value": 8, "confidence": 78 },
+    { "source": 3, "target": 4, "value": 12, "confidence": 88 }
+  ]
+}

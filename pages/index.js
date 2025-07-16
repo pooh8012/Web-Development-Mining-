@@ -1,21 +1,14 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
-import GephiLiteEmbed from "@/components/Navbar/Gephi";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import HeroSection from "../components/Home/HeroSection";
+import FeatureGrid from "../components/Home/FeatureGrid";
+import TeamSection from "../components/Home/TeamSection";
+import { motion } from "framer-motion";
 
 export default function Home() {
   return (
     <>
-      <GephiLiteEmbed />
+      <HeroSection />
+      <FeatureGrid />
+      <TeamSection />
     </>
   );
 }
