@@ -56,8 +56,8 @@ export default function ParticleBackground() {
         particle.update();
         particle.draw();
       });
-
-      requestAnimationFrame(animate);
+      ``;
+      requestAnimationFrame(animate);``
     }
 
     animate();

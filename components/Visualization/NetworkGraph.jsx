@@ -1,37 +1,55 @@
-// components/Visualizations/NetworkGraph.jsx
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import useD3 from "../../hooks/useD3";
 
-export default function NetworkGraph() {
-  const [confidenceThreshold, setConfidenceThreshold] = useState(50);
+export default function NetworkGraph({ confidenceThreshold = 50 }) {
+  const [dimensions, setDimensions] = useState({ width: 800, height: 500 });
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (containerRef.current) {
+        const { width } = containerRef.current.getBoundingClientRect();
+        const height = Math.min(width * 0.625, 600);
+        setDimensions({ width, height });
+      }
+    };
+
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
 
   const ref = useD3(
     (svg) => {
-      const width = 800;
-      const height = 500;
+      const { width, height } = dimensions;
 
       // Clear previous content
       svg.selectAll("*").remove();
 
       // Generate sample data
+      const nodeCount = width < 640 ? 15 : 30;
       const nodes = [];
       const links = [];
 
       // Create nodes
-      for (let i = 0; i < 30; i++) {
+      for (let i = 0; i < nodeCount; i++) {
         nodes.push({
           id: i,
-          name: i < 15 ? `Mining Co ${i + 1}` : `Data Co ${i - 14}`,
-          group: i < 15 ? 1 : 2,
-          value: Math.random() * 20 + 10,
+          name:
+            i < nodeCount / 2
+              ? `Mining Co ${i + 1}`
+              : `Data Co ${i - Math.floor(nodeCount / 2) + 1}`,
+          group: i < nodeCount / 2 ? 1 : 2,
+          value: Math.random() * (width < 640 ? 15 : 20) + 10,
         });
       }
 
       // Create links
-      for (let i = 0; i < 50; i++) {
-        const source = Math.floor(Math.random() * 30);
-        const target = Math.floor(Math.random() * 30);
+      const linkCount = width < 640 ? 25 : 50;
+      for (let i = 0; i < linkCount; i++) {
+        const source = Math.floor(Math.random() * nodeCount);
+        const target = Math.floor(Math.random() * nodeCount);
         if (source !== target) {
           links.push({
             source: source,
@@ -47,7 +65,10 @@ export default function NetworkGraph() {
         (l) => l.confidence >= confidenceThreshold
       );
 
-      // Create force simulation
+      // Create force simulation with responsive forces
+      const chargeStrength = width < 640 ? -200 : -300;
+      const linkDistance = width < 640 ? 60 : 100;
+
       const simulation = d3
         .forceSimulation(nodes)
         .force(
@@ -55,9 +76,9 @@ export default function NetworkGraph() {
           d3
             .forceLink(filteredLinks)
             .id((d) => d.id)
-            .distance(100)
+            .distance(linkDistance)
         )
-        .force("charge", d3.forceManyBody().strength(-300))
+        .force("charge", d3.forceManyBody().strength(chargeStrength))
         .force("center", d3.forceCenter(width / 2, height / 2))
         .force(
           "collision",
@@ -109,18 +130,20 @@ export default function NetworkGraph() {
             .on("end", dragended)
         );
 
-      // Add labels
-      const labels = g
-        .append("g")
-        .selectAll("text")
-        .data(nodes)
-        .enter()
-        .append("text")
-        .text((d) => d.name)
-        .attr("font-size", "10px")
-        .attr("fill", "#94a3b8")
-        .attr("text-anchor", "middle")
-        .attr("dy", -15);
+      // Add labels (hide on small screens)
+      if (width > 640) {
+        const labels = g
+          .append("g")
+          .selectAll("text")
+          .data(nodes)
+          .enter()
+          .append("text")
+          .text((d) => d.name)
+          .attr("font-size", "10px")
+          .attr("fill", "#94a3b8")
+          .attr("text-anchor", "middle")
+          .attr("dy", -15);
+      }
 
       // Add hover effects
       node
@@ -149,7 +172,11 @@ export default function NetworkGraph() {
 
         node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
 
-        labels.attr("x", (d) => d.x).attr("y", (d) => d.y);
+        if (width > 640) {
+          g.selectAll("text")
+            .attr("x", (d) => d.x)
+            .attr("y", (d) => d.y);
+        }
       });
 
       // Drag functions
@@ -170,16 +197,16 @@ export default function NetworkGraph() {
         d.fy = null;
       }
     },
-    [confidenceThreshold]
+    [confidenceThreshold, dimensions]
   );
 
   return (
-    <div className="w-full h-full">
+    <div ref={containerRef} className="w-full h-full">
       <svg
         ref={ref}
-        viewBox="0 0 800 500"
+        viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
         className="w-full h-full"
-        style={{ maxHeight: "600px" }}
+        preserveAspectRatio="xMidYMid meet"
       />
     </div>
   );

@@ -1,3 +1,4 @@
+// components/Home/FeatureGrid.jsx
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import GlassCard from "../UI/GlassCard";
@@ -81,18 +82,21 @@ export default function FeatureGrid() {
   };
 
   return (
-    <section id="about" className="py-24 px-6">
+    <section
+      id="about"
+      className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8"
+    >
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-8 sm:mb-12 lg:mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-display font-bold gradient-text mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold gradient-text mb-4">
             Explore Our Platform
           </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-xl sm:max-w-2xl lg:max-w-3xl mx-auto px-4">
             Discover the intersection of traditional mining and modern
             data-mining through interactive tools and comprehensive research
             resources.
@@ -104,19 +108,21 @@ export default function FeatureGrid() {
           variants={containerVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
         >
           {features.map((feature, index) => (
             <motion.div key={index} variants={itemVariants}>
-              <GlassCard href={feature.href} className="h-full">
+              <GlassCard href={feature.href} className="h-full p-6 sm:p-8">
                 <div
-                  className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.color} 
-                  flex items-center justify-center text-3xl mb-6 shadow-lg`}
+                  className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${feature.color} 
+                  flex items-center justify-center text-2xl sm:text-3xl mb-4 sm:mb-6 shadow-lg`}
                 >
                   {feature.icon}
                 </div>
-                <h3 className="text-2xl font-semibold mb-3">{feature.title}</h3>
-                <p className="text-gray-400 leading-relaxed">
+                <h3 className="text-xl sm:text-2xl font-semibold mb-2 sm:mb-3">
+                  {feature.title}
+                </h3>
+                <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
                   {feature.description}
                 </p>
               </GlassCard>

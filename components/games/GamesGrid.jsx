@@ -1,4 +1,3 @@
-// components/Games/GamesGrid.jsx
 import { motion } from "framer-motion";
 import GameCard from "./GameCard";
 
@@ -55,7 +54,7 @@ export default function GamesGrid() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ staggerChildren: 0.1 }}
-      className="grid grid-cols-1 md:grid-cols-2 gap-8"
+      className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8"
     >
       {games.map((game, index) => (
         <motion.div

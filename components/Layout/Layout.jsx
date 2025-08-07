@@ -1,3 +1,4 @@
+// components/Layout/Layout.jsx
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import ParticleBackground from "../Home/ParticleBackground";

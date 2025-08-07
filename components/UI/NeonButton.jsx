@@ -1,3 +1,4 @@
+// components/UI/NeonButton.jsx
 import Link from "next/link";
 import { motion } from "framer-motion";
 
@@ -13,14 +14,15 @@ export default function NeonButton({
   const baseStyles = `
     relative font-semibold rounded-full
     transition-all duration-300
-    flex items-center justify-center
+    inline-flex items-center justify-center
+    whitespace-nowrap
     ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
   `;
 
   const sizeStyles = {
-    sm: "px-6 py-2 text-sm",
-    md: "px-8 py-3 text-base",
-    lg: "px-10 py-4 text-lg",
+    sm: "px-4 sm:px-6 py-2 text-xs sm:text-sm",
+    md: "px-6 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base",
+    lg: "px-8 sm:px-10 py-3 sm:py-4 text-base sm:text-lg",
   };
 
   const variantStyles = {

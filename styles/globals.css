@@ -16,6 +16,7 @@
     @apply bg-primary-darker text-white;
     font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
     cursor: auto;
+    overflow-x: hidden;
   }
 
   * {
@@ -24,14 +25,24 @@
 
   a,
   button,
-  [role="button"] {
+  [role="button"],
+  input,
+  select,
+  textarea {
     cursor: pointer !important;
+  }
+
+  /* Mobile-specific adjustments */
+  @media (max-width: 640px) {
+    html {
+      font-size: 14px;
+    }
   }
 }
 
 @layer components {
   .glass-panel {
-    @apply bg-glass-white backdrop-blur-md border border-glass-border rounded-2xl;
+    @apply bg-glass-white backdrop-blur-md border border-glass-border rounded-xl sm:rounded-2xl;
     box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1);
   }
 
@@ -45,9 +56,26 @@
   .neon-text {
     text-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff, 0 0 30px #00d4ff;
   }
+
+  /* Responsive container */
+  .container-responsive {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Mobile-friendly tap targets */
+  @media (max-width: 640px) {
+    button,
+    a,
+    input,
+    select,
+    textarea {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
 }
 
-/* Custom animations */
+/* Responsive animations */
 @keyframes float {
   0% {
     transform: translateY(100vh) scale(0);
@@ -75,5 +103,71 @@
   }
   40% {
     text-shadow: 3px 0 20px #b829dd, -3px 0 20px #ff006e, 0 0 60px #00d4ff;
+  }
+}
+
+/* Responsive scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+}
+
+::-webkit-scrollbar-track {
+  background: var(--primary-darker);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-neon);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-purple);
+}
+
+/* Animation delays */
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+  .text-responsive-sm {
+    font-size: 0.875rem;
+  }
+
+  .text-responsive-base {
+    font-size: 1rem;
+  }
+
+  .text-responsive-lg {
+    font-size: 1.125rem;
+  }
+}
+
+/* Improved touch targets for mobile */
+@media (pointer: coarse) {
+  button,
+  a,
+  input[type="checkbox"],
+  input[type="radio"] {
+    min-height: 48px;
+    min-width: 48px;
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

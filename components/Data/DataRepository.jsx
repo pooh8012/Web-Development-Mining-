@@ -1,8 +1,6 @@
-// components/Data/DataRepository.jsx
 import { useState } from "react";
 import { motion } from "framer-motion";
 import DataCard from "./DataCard";
-import NeonButton from "../UI/NeonButton";
 
 const dataCategories = [
   {
@@ -113,9 +111,9 @@ export default function DataRepository() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-panel p-6 mb-8"
+        className="glass-panel p-4 sm:p-6 mb-6 sm:mb-8"
       >
-        <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex flex-col lg:flex-row gap-4">
           {/* Search */}
           <div className="flex-1">
             <input
@@ -123,8 +121,8 @@ export default function DataRepository() {
               placeholder="Search resources..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-glass-white border border-glass-border rounded-lg px-4 py-3 
-                text-white placeholder-gray-400 focus:border-accent-neon transition-colors"
+              className="w-full bg-glass-white border border-glass-border rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 
+                text-sm sm:text-base text-white placeholder-gray-400 focus:border-accent-neon transition-colors"
             />
           </div>
 
@@ -132,7 +130,7 @@ export default function DataRepository() {
           <div className="flex gap-2 flex-wrap">
             <button
               onClick={() => setActiveCategory("All")}
-              className={`px-4 py-2 rounded-full transition-all ${
+              className={`px-3 sm:px-4 py-2 text-sm sm:text-base rounded-full transition-all ${
                 activeCategory === "All"
                   ? "bg-gradient-to-r from-accent-neon to-accent-purple text-primary-darker"
                   : "glass-panel text-gray-300 hover:text-white"
@@ -144,7 +142,7 @@ export default function DataRepository() {
               <button
                 key={cat.category}
                 onClick={() => setActiveCategory(cat.category)}
-                className={`px-4 py-2 rounded-full transition-all ${
+                className={`px-3 sm:px-4 py-2 text-sm sm:text-base rounded-full transition-all ${
                   activeCategory === cat.category
                     ? "bg-gradient-to-r from-accent-neon to-accent-purple text-primary-darker"
                     : "glass-panel text-gray-300 hover:text-white"
@@ -161,7 +159,7 @@ export default function DataRepository() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="mb-6 text-gray-400"
+        className="mb-4 sm:mb-6 text-sm sm:text-base text-gray-400"
       >
         Showing {filteredItems.length} resources
       </motion.div>
@@ -171,7 +169,7 @@ export default function DataRepository() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ staggerChildren: 0.1 }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
       >
         {filteredItems.map((item, index) => (
           <motion.div

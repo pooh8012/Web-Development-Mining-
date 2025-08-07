@@ -14,7 +14,10 @@ function MyApp({ Component, pageProps, router }) {
           name="description"
           content="Interactive web platform for mining and data-mining research & visualization"
         />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+        />
         <link rel="icon" href="/favicon.ico" />
         {/* Font imports */}
         <style>
