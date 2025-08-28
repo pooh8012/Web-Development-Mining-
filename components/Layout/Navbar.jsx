@@ -26,6 +26,16 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
   const handleClick = (e, href) => {
     // Close mobile menu
     setMobileMenuOpen(false);
@@ -36,18 +46,20 @@ export default function Navbar() {
       const [path, hash] = href.split("#");
 
       if (path === "" || path === "/") {
-        const element = document.getElementById(hash);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth" });
+        // We're already on home page or navigating to home page
+        if (router.pathname === "/") {
+          // Already on home page, just scroll
+          scrollToSection(hash);
+        } else {
+          // Navigate to home page first, then scroll
+          router.push("/").then(() => {
+            setTimeout(() => scrollToSection(hash), 100);
+          });
         }
       } else {
-        router.push("/").then(() => {
-          setTimeout(() => {
-            const element = document.getElementById(hash);
-            if (element) {
-              element.scrollIntoView({ behavior: "smooth" });
-            }
-          }, 100);
+        // Different page with hash
+        router.push(href).then(() => {
+          setTimeout(() => scrollToSection(hash), 100);
         });
       }
     }

@@ -171,3 +171,28 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Add these to your styles/globals.css */
+
+/* Ensure these basic classes exist */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+}
+
+.glass-white {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.glass-border {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.gradient-text {
+  background: linear-gradient(45deg, #00d4ff, #b829dd);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

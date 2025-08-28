@@ -1,3 +1,4 @@
+// components/Data/DataRepository.jsx - Fixed version
 import { useState } from "react";
 import { motion } from "framer-motion";
 import DataCard from "./DataCard";
@@ -106,13 +107,9 @@ export default function DataRepository() {
   });
 
   return (
-    <div>
+    <div className="w-full">
       {/* Filters */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="glass-panel p-4 sm:p-6 mb-6 sm:mb-8"
-      >
+      <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6 mb-8">
         <div className="flex flex-col lg:flex-row gap-4">
           {/* Search */}
           <div className="flex-1">
@@ -121,8 +118,7 @@ export default function DataRepository() {
               placeholder="Search resources..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-glass-white border border-glass-border rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 
-                text-sm sm:text-base text-white placeholder-gray-400 focus:border-accent-neon transition-colors"
+              className="w-full bg-slate-800/50 border border-slate-600/50 rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 focus:outline-none transition-all"
             />
           </div>
 
@@ -130,10 +126,10 @@ export default function DataRepository() {
           <div className="flex gap-2 flex-wrap">
             <button
               onClick={() => setActiveCategory("All")}
-              className={`px-3 sm:px-4 py-2 text-sm sm:text-base rounded-full transition-all ${
+              className={`px-4 py-2 text-sm rounded-full font-medium transition-all ${
                 activeCategory === "All"
-                  ? "bg-gradient-to-r from-accent-neon to-accent-purple text-primary-darker"
-                  : "glass-panel text-gray-300 hover:text-white"
+                  ? "bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg"
+                  : "bg-slate-800/50 text-slate-300 hover:text-white hover:bg-slate-700/50 border border-slate-600/50"
               }`}
             >
               All
@@ -142,10 +138,10 @@ export default function DataRepository() {
               <button
                 key={cat.category}
                 onClick={() => setActiveCategory(cat.category)}
-                className={`px-3 sm:px-4 py-2 text-sm sm:text-base rounded-full transition-all ${
+                className={`px-4 py-2 text-sm rounded-full font-medium transition-all ${
                   activeCategory === cat.category
-                    ? "bg-gradient-to-r from-accent-neon to-accent-purple text-primary-darker"
-                    : "glass-panel text-gray-300 hover:text-white"
+                    ? "bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg"
+                    : "bg-slate-800/50 text-slate-300 hover:text-white hover:bg-slate-700/50 border border-slate-600/50"
                 }`}
               >
                 {cat.category}
@@ -153,35 +149,43 @@ export default function DataRepository() {
             ))}
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Results count */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="mb-4 sm:mb-6 text-sm sm:text-base text-gray-400"
-      >
-        Showing {filteredItems.length} resources
-      </motion.div>
+      <div className="mb-6 text-slate-400">
+        Showing{" "}
+        <span className="text-cyan-400 font-semibold">
+          {filteredItems.length}
+        </span>{" "}
+        resources
+      </div>
 
       {/* Data grid */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ staggerChildren: 0.1 }}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
-      >
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredItems.map((item, index) => (
           <motion.div
             key={item.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.05 }}
+            transition={{ delay: index * 0.1 }}
           >
             <DataCard data={item} />
           </motion.div>
         ))}
-      </motion.div>
+      </div>
+
+      {/* Empty state */}
+      {filteredItems.length === 0 && (
+        <div className="text-center py-12">
+          <div className="text-6xl mb-4">🔍</div>
+          <h3 className="text-xl font-semibold text-white mb-2">
+            No resources found
+          </h3>
+          <p className="text-slate-400">
+            Try adjusting your search terms or selected category.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
