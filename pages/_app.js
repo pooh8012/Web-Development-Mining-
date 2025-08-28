@@ -1,6 +1,7 @@
 // pages/_app.js
 import "../styles/globals.css";
 import "../styles/animations.css";
+import "../styles/gaia.css";
 import Layout from "../components/Layout/Layout";
 import { motion, AnimatePresence } from "framer-motion";
 import Head from "next/head";
