@@ -72,7 +72,7 @@ export default function Visualizations() {
                     <label className="block text-xs sm:text-sm text-gray-400 mb-2">
                       Visualization Mode
                     </label>
-                    <select className="w-full bg-glass-white border border-glass-border rounded-lg px-3 sm:px-4 py-2 text-sm sm:text-base text-white">
+                    <select className="w-60 bg-glass-white border border-glass-border rounded-lg px-3 sm:px-4 py-2 text-sm sm:text-base text-white">
                       <option>Mining Activity Heatmap</option>
                       <option>Environmental Impact</option>
                       <option>Corporate Presence</option>

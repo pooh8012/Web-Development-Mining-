@@ -10,7 +10,7 @@ function MyApp({ Component, pageProps, router }) {
   return (
     <>
       <Head>
-        <title>Web-Development-Mining | Interactive Research Platform</title>
+        <title>Web-Development-Mining and Data mining + AI</title>
         <meta
           name="description"
           content="Interactive web platform for mining and data-mining research & visualization"

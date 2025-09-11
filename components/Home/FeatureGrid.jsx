@@ -1,7 +1,7 @@
-// components/Home/FeatureGrid.jsx - Debug version
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import GlassCard from "../UI/GlassCard";
+import Visualizations from "@/pages/visualizations";
 
 const features = [
   {
@@ -60,8 +60,6 @@ export default function FeatureGrid() {
     threshold: 0.1,
   });
 
-  console.log("FeatureGrid rendered, inView:", inView); // Debug log
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -88,6 +86,10 @@ export default function FeatureGrid() {
       id="about"
       className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-red-500/10" // Added background for debugging
     >
+      <div className="mt-5">
+        <Visualizations />
+      </div>
+
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -110,7 +112,7 @@ export default function FeatureGrid() {
           variants={containerVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10" // Adjusted gap for better spacing
+          className="grid grid-cols-1 sm:grid-cols-5 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-20"
         >
           {features.map((feature, index) => (
             <motion.div key={index} variants={itemVariants}>

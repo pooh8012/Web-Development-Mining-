@@ -1,4 +1,3 @@
-// components/Layout/Footer.jsx
 import Link from "next/link";
 
 export default function Footer() {
@@ -39,12 +38,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/data"
+                {/* <Link
+                  href="/About"
                   className="text-gray-400 hover:text-accent-neon transition-colors text-sm sm:text-base"
                 >
-                  Data Repository
-                </Link>
+                  Home
+                </Link> */}
               </li>
             </ul>
           </div>

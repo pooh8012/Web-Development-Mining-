@@ -3,28 +3,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import GlassCard from "../UI/GlassCard";
 import NeonButton from "../UI/NeonButton";
 import GameEmbed from "./GameEmbed";
-import { useOSDetection } from "../../hooks/useOSDetection";
 import Link from "next/link";
-
-// simple compat: all "web" games are playable inline, "download" can be gated
-// const isGameCompatible = (game, osInfo) => {
-//   if (!game?.requirements) return true;
-//   if (game.requirements.includes("web")) return true;
-
-//   console.log(game);
-
-//   // If someday you add native builds:
-//   if (game.requirements.includes("windows") && !osInfo.isWindows) return false;
-//   if (game.requirements.includes("mac") && !osInfo.isMac) return false;
-//   if (game.requirements.includes("linux") && !osInfo.isLinux) return false;
-//   return true;
-// };
 
 export default function GameCard({ game }) {
   const [showGameModal, setShowGameModal] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
-  // const osInfo = useOSDetection();
-  // const compatible = isGameCompatible(game, osInfo);
 
   const handlePlayClick = () => setShowGameModal(true);
 
@@ -77,7 +60,7 @@ export default function GameCard({ game }) {
         </div>
 
         {/* Tags */}
-        {game.tags?.length ? (
+        {/* {game.tags?.length ? (
           <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
             {game.tags.map((tag) => (
               <span
@@ -88,7 +71,7 @@ export default function GameCard({ game }) {
               </span>
             ))}
           </div>
-        ) : null}
+        ) : null} */}
 
         {/* Actions */}
         <div>
