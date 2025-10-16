@@ -1,24 +1,8 @@
-// // components/Layout/Layout.jsx
-// import Navbar from "./Navbar";
-// import Footer from "./Footer";
-// import ParticleBackground from "../Home/ParticleBackground";
-
-// export default function Layout({ children }) {
-//   return (
-//     <div className="min-h-screen relative overflow-hidden">
-//       <ParticleBackground />
-//       <Navbar />
-//       <main className="relative z-10">{children}</main>
-//       <Footer />
-//     </div>
-//   );
-// }
-
-// components/Layout/Layout.jsx
 import { useEffect, useRef } from "react";
+import { useRouter } from "next/router";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-// Data Mining Background Component
+
 function DataMiningBackground() {
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
@@ -34,11 +18,9 @@ function DataMiningBackground() {
     };
     updateCanvasSize();
 
-    // Data mining themed elements
     const dataNodes = [];
     const connections = [];
 
-    // Responsive node count based on screen size
     const getNodeCount = () => {
       if (window.innerWidth < 768) return 15; // Mobile
       if (window.innerWidth < 1024) return 25; // Tablet
@@ -63,15 +45,12 @@ function DataMiningBackground() {
         this.x += this.vx;
         this.y += this.vy;
 
-        // Bounce off edges
         if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
         if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
 
-        // Keep within bounds
         this.x = Math.max(0, Math.min(canvas.width, this.x));
         this.y = Math.max(0, Math.min(canvas.height, this.y));
 
-        // Pulse animation
         this.pulse += 0.02;
         this.size = this.originalSize + Math.sin(this.pulse) * 0.5;
       }
@@ -90,7 +69,6 @@ function DataMiningBackground() {
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
 
-        // Inner core
         ctx.shadowBlur = 0;
         ctx.fillStyle = "#ffffff";
         ctx.globalAlpha = 0.8;
@@ -117,7 +95,6 @@ function DataMiningBackground() {
         this.progress += this.speed;
         if (this.progress > 1) this.progress = 0;
 
-        // Add data particles along the stream
         const currentTime = Date.now();
         if (currentTime - this.lastParticleTime > 500) {
           this.particles.push({
@@ -129,12 +106,10 @@ function DataMiningBackground() {
           this.lastParticleTime = currentTime;
         }
 
-        // Update particles
         this.particles = this.particles.filter((particle) => {
           particle.progress += this.speed * 2;
           particle.life -= 0.01;
 
-          // Interpolate position
           particle.x =
             this.start.x + (this.end.x - this.start.x) * particle.progress;
           particle.y =
@@ -145,7 +120,6 @@ function DataMiningBackground() {
       }
 
       draw() {
-        // Draw connection line
         ctx.save();
         ctx.globalAlpha = this.opacity * 0.3;
         ctx.strokeStyle = "#00d4ff";
@@ -170,7 +144,6 @@ function DataMiningBackground() {
       }
     }
 
-    // Initialize nodes
     const initNodes = () => {
       dataNodes.length = 0;
       connections.length = 0;
@@ -180,7 +153,6 @@ function DataMiningBackground() {
         dataNodes.push(new DataNode());
       }
 
-      // Create connections between nearby nodes
       for (let i = 0; i < dataNodes.length; i++) {
         for (let j = i + 1; j < dataNodes.length; j++) {
           const distance = Math.hypot(
@@ -197,7 +169,6 @@ function DataMiningBackground() {
 
     initNodes();
 
-    // Binary rain effect
     const binaryDrops = [];
     class BinaryDrop {
       constructor() {
@@ -226,7 +197,6 @@ function DataMiningBackground() {
       }
     }
 
-    // Add binary drops (fewer on mobile)
     const binaryCount = window.innerWidth < 768 ? 20 : 40;
     for (let i = 0; i < binaryCount; i++) {
       binaryDrops.push(new BinaryDrop());
@@ -235,19 +205,16 @@ function DataMiningBackground() {
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Update and draw binary rain
       binaryDrops.forEach((drop) => {
         drop.update();
         drop.draw();
       });
 
-      // Update and draw nodes
       dataNodes.forEach((node) => {
         node.update();
         node.draw();
       });
 
-      // Update and draw connections
       connections.forEach((connection) => {
         connection.update();
         connection.draw();
@@ -260,7 +227,7 @@ function DataMiningBackground() {
 
     const handleResize = () => {
       updateCanvasSize();
-      initNodes(); // Reinitialize for new screen size
+      initNodes();
     };
 
     window.addEventListener("resize", handleResize);
@@ -283,12 +250,19 @@ function DataMiningBackground() {
 }
 
 export default function Layout({ children }) {
+  const router = useRouter();
+
+  const isGamePage =
+    router.pathname.startsWith("/games/") &&
+    router.pathname !== "/games" &&
+    router.pathname !== "/games/";
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       <DataMiningBackground />
-      <Navbar />
+      {!isGamePage && <Navbar />}
       <div className="relative z-10">{children}</div>
-      <Footer />
+      {!isGamePage && <Footer />}
     </div>
   );
 }

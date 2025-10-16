@@ -1,16 +1,15 @@
 // components/Layout/Navbar.jsx
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/#about", label: "About" },
-  { href: "/visualizations", label: "Visualizations" },
-  { href: "/games", label: "Games" },
-  // { href: "/data", label: "Data" },
-  { href: "/#team", label: "Team" },
+  { href: '/', label: 'Home' },
+  { href: '/visualizations', label: 'Visualizations' },
+  { href: '/#about', label: 'About' },
+  { href: '/games', label: 'Games' },
+  { href: '/#team', label: 'Team' },
 ];
 
 export default function Navbar() {
@@ -22,42 +21,36 @@ export default function Navbar() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
+        behavior: 'smooth',
+        block: 'start',
       });
     }
   };
 
   const handleClick = (e, href) => {
-    // Close mobile menu
     setMobileMenuOpen(false);
 
-    // Handle hash navigation
-    if (href.includes("#")) {
+    if (href.includes('#')) {
       e.preventDefault();
-      const [path, hash] = href.split("#");
+      const [path, hash] = href.split('#');
 
-      if (path === "" || path === "/") {
-        // We're already on home page or navigating to home page
-        if (router.pathname === "/") {
-          // Already on home page, just scroll
+      if (path === '' || path === '/') {
+        if (router.pathname === '/') {
           scrollToSection(hash);
         } else {
-          // Navigate to home page first, then scroll
-          router.push("/").then(() => {
+          router.push('/').then(() => {
             setTimeout(() => scrollToSection(hash), 100);
           });
         }
       } else {
-        // Different page with hash
         router.push(href).then(() => {
           setTimeout(() => scrollToSection(hash), 100);
         });
@@ -67,18 +60,18 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Desktop Navbar */}
+      {/* Desktop Navbar - Centered Only */}
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
-        className={`hidden lg:block fixed top-5 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ${
-          scrolled ? "top-3" : "top-5"
+        className={`hidden lg:flex fixed top-0 left-0 right-0 z-50 justify-center transition-all duration-300 ${
+          scrolled ? 'py-3' : 'py-5'
         }`}
       >
         <div
           className={`glass-panel px-8 xl:px-12 py-4 transition-all duration-300 ${
-            scrolled ? "scale-95" : ""
+            scrolled ? 'scale-95' : ''
           }`}
         >
           <ul className="flex items-center gap-6 xl:gap-8">
@@ -89,8 +82,8 @@ export default function Navbar() {
                   onClick={(e) => handleClick(e, item.href)}
                   className={`text-sm xl:text-base font-medium transition-all duration-300 relative group ${
                     router.pathname === item.href
-                      ? "text-accent-neon"
-                      : "text-gray-300 hover:text-white"
+                      ? 'text-accent-neon'
+                      : 'text-gray-300 hover:text-white'
                   }`}
                 >
                   {item.label}
@@ -110,11 +103,13 @@ export default function Navbar() {
       >
         <div
           className={`glass-panel px-4 py-3 flex justify-between items-center transition-all duration-300 ${
-            scrolled ? "shadow-lg" : ""
+            scrolled ? 'shadow-lg' : ''
           }`}
         >
-          <Link href="/" className="text-lg font-bold gradient-text">
-            Web Mining
+          <Link href="/" className="flex items-center gap-2">
+            <span className="text-lg font-bold bg-gradient-to-r from-cyan-400 to-purple-400 text-transparent bg-clip-text">
+              mining
+            </span>
           </Link>
 
           {/* Hamburger Menu Button */}
@@ -165,8 +160,8 @@ export default function Navbar() {
                         onClick={(e) => handleClick(e, item.href)}
                         className={`block py-2 px-4 rounded-lg transition-all ${
                           router.pathname === item.href
-                            ? "bg-accent-neon/20 text-accent-neon"
-                            : "text-gray-300 hover:bg-white/5 hover:text-white"
+                            ? 'bg-accent-neon/20 text-accent-neon'
+                            : 'text-gray-300 hover:bg-white/5 hover:text-white'
                         }`}
                       >
                         {item.label}

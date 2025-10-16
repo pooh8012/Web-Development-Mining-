@@ -7,7 +7,7 @@ export default function GameEmbed({ game }) {
     return (
       <div className="aspect-[16/9] w-full overflow-hidden rounded-2xl shadow-xl ring-1 ring-white/10">
         <iframe
-          src={game.html.path} // "/games/gaia/index.html"
+          src={game.html.path}
           className="h-full w-full"
           title={game.title}
           allowFullScreen

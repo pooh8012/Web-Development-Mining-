@@ -1,56 +1,55 @@
-import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-import GlassCard from "../UI/GlassCard";
-import Visualizations from "@/pages/visualizations";
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import Visualizations from '@/pages/visualizations';
 
 const features = [
   {
-    icon: "🔬",
-    title: "Academic Research",
+    icon: '🔬',
+    title: 'Academic Research',
     description:
-      "Deep dive into scholarly findings on corporate networks and their societal implications through our curated research database.",
-    color: "from-blue-500 to-cyan-500",
-    href: "/data",
+      'Deep dive into scholarly findings on corporate networks and their societal implications through our curated research database.',
+    color: 'from-blue-500 to-cyan-500',
+    href: '/data',
   },
   {
-    icon: "📊",
-    title: "Interactive Visualizations",
+    icon: '📊',
+    title: 'Interactive Visualizations',
     description:
-      "Explore dynamic network graphs and geographic data with D3.js-powered visualizations that bring complex data to life.",
-    color: "from-purple-500 to-pink-500",
-    href: "/visualizations",
+      'Explore dynamic network graphs and geographic data with D3.js-powered visualizations that bring complex data to life.',
+    color: 'from-purple-500 to-pink-500',
+    href: '/visualizations',
   },
   {
-    icon: "🎮",
-    title: "Educational Games",
+    icon: '🎮',
+    title: 'Educational Games',
     description:
-      "Learn through play with our custom browser games that make data-mining concepts accessible and engaging.",
-    color: "from-pink-500 to-red-500",
-    href: "/games",
+      'Learn through play with our custom browser games that make data-mining concepts accessible and engaging.',
+    color: 'from-pink-500 to-red-500',
+    href: '/games',
   },
   {
-    icon: "💾",
-    title: "Open Data Access",
+    icon: '💾',
+    title: 'Open Data Access',
     description:
-      "Download white papers, datasets, and audio commentaries to support your own research and analysis.",
-    color: "from-green-500 to-teal-500",
-    href: "/data",
+      'Download white papers, datasets, and audio commentaries to support your own research and analysis.',
+    color: 'from-green-500 to-teal-500',
+    href: '/data',
   },
   {
-    icon: "🌐",
-    title: "Network Analysis",
+    icon: '🌐',
+    title: 'Network Analysis',
     description:
-      "Trace partnerships between mining and tech companies through force-directed graphs with confidence thresholds.",
-    color: "from-orange-500 to-yellow-500",
-    href: "/visualizations",
+      'Trace partnerships between mining and tech companies through force-directed graphs with confidence thresholds.',
+    color: 'from-orange-500 to-yellow-500',
+    href: '/visualizations',
   },
   {
-    icon: "🚀",
-    title: "Modern Stack",
+    icon: '🚀',
+    title: 'Modern Stack',
     description:
-      "Built with Next.js, Tailwind CSS, and deployed on Vercel for blazing-fast performance and scalability.",
-    color: "from-teal-500 to-blue-500",
-    href: "/#tech",
+      'Built with Next.js, Tailwind CSS, and deployed on Vercel for blazing-fast performance and scalability.',
+    color: 'from-teal-500 to-blue-500',
+    href: '/#tech',
   },
 ];
 
@@ -84,7 +83,7 @@ export default function FeatureGrid() {
   return (
     <section
       id="about"
-      className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-red-500/10" // Added background for debugging
+      className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-red-500/10 mt-16 sm:mt-0"
     >
       <div className="mt-5">
         <Visualizations />
@@ -111,8 +110,8 @@ export default function FeatureGrid() {
           ref={ref}
           variants={containerVariants}
           initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          className="grid grid-cols-1 sm:grid-cols-5 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-20"
+          animate={inView ? 'visible' : 'hidden'}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-6"
         >
           {features.map((feature, index) => (
             <motion.div key={index} variants={itemVariants}>
