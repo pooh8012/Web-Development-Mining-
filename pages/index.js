@@ -2,7 +2,6 @@ import Head from 'next/head';
 import HeroSection from '../components/Home/HeroSection';
 import FeatureGrid from '../components/Home/FeatureGrid';
 import TeamSection from '../components/Home/TeamSection';
-import VisualizationsPage from './visualizations';
 
 export default function Home() {
   return (
@@ -18,7 +17,7 @@ export default function Home() {
       <div className="relative">
         {/* Hero / intro */}
         <HeroSection />
-        <VisualizationsPage />
+
         {/* Feature / About (this already has id="about" INSIDE FeatureGrid) */}
         <FeatureGrid />
 

@@ -30,7 +30,7 @@ const teamMembers = [
     name: 'Andrés Villar',
     role: 'Visual Artist & Creative Director',
     specialty: 'Artistic Vision & Visual Design',
-    image: '/images/Villar_avatar_1.png',
+    image: '/images/Villar_avatar.jpg',
     color: 'from-purple-500 to-pink-500',
     bio: "An artist based in St. Thomas, Ontario, Canada, bringing creative vision and artistic expertise to the project's visual elements and conceptual design.",
     skills: ['Visual Arts', 'Creative Direction', 'Conceptual Design'],

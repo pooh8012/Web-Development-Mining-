@@ -1,55 +1,77 @@
 import { motion } from 'framer-motion';
 import NeonButton from '../UI/NeonButton';
+import VisualizationContainer from '../Visualization/VisualizationContainer';
+import GlobeAnimated from '../Visualization/GlobeAnimated';
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8 pt-24 sm:pt-20 md:pt-0">
-      <div className="relative z-10 text-center w-full max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+    <section
+      className="
+        relative min-h-screen
+        grid grid-rows-[auto_1fr]
+        items-start
+        overflow-hidden
+        px-4 sm:px-6 lg:px-8
+        pt-20  
+      "
+    >
+      <div className="relative z-10 text-center w-full max-w-5xl mx-auto pt-10">
+        <span
+          className="
+    block font-extrabold leading-tight
+    text-[clamp(1.75rem,4vw,3rem)] sm:text-[clamp(2rem,3.8vw,3.25rem)]
+    bg-gradient-to-r from-[#60efff] via-[#b3a6ff] to-[#ff2ea6]
+    bg-clip-text text-transparent
+    drop-shadow-[0_0_18px_rgba(96,239,255,.25)]
+    gradient-animate
+    relative
+    after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2
+    after:-bottom-2 after:h-[2px] after:w-24
+    after:bg-[radial-gradient(closest-side,rgba(96,239,255,.9),transparent)]
+    after:opacity-70
+  "
         >
-          <h1 className="font-display font-bold mb-3 sm:mb-6 leading-tight">
-            <span className="block text-3xl sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl animate-glitch neon-text">
-              Web Development Mining
-            </span>
-            <span className="block text-xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl mt-1 sm:mt-3 gradient-text">
-              and Data mining + AI
-            </span>
-          </h1>
+          Data mining / Mining
+        </span>
+      </div>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="text-sm sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-4 sm:mb-8 md:mb-12 max-w-xl sm:max-w-2xl lg:max-w-3xl mx-auto px-2 sm:px-4 leading-relaxed"
-          >
-            Interactive Research Platform for Mining ↔ Data Mining Connections
-          </motion.p>
+      {/* Globe fills the remaining viewport height */}
+      <div className="w-full max-w-6xl mx-auto mt-5  h-[50vh] md:h-[52vh] lg:h-[54vh]">
+        <GlobeAnimated />
+      </div>
+      {/* Header */}
+      <div className="relative z-10 text-center w-full max-w-5xl mx-auto">
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05, duration: 0.4 }}
+          className="mt-2 text-[clamp(0.95rem,1.6vw,1.15rem)] text-gray-300 max-w-3xl mx-auto"
+        >
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry.{' '}
+        </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-2"
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.12, duration: 0.4 }}
+          className="mt-4 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center"
+        >
+          <NeonButton
+            href="/visualizations"
+            size="lg"
+            className="w-full sm:w-auto px-6 py-3"
           >
-            <NeonButton
-              href="/visualizations"
-              size="lg"
-              className="w-full sm:w-auto px-6 sm:px-9 py-3 sm:py-4"
-            >
-              Explore Visualizations
-            </NeonButton>
-            <NeonButton
-              href="/games"
-              variant="outline"
-              size="lg"
-              className="w-full sm:w-auto px-6 sm:px-9 py-3 sm:py-4"
-            >
-              Explore Games
-            </NeonButton>
-          </motion.div>
+            Explore Visualizations
+          </NeonButton>
+          <NeonButton
+            href="/games"
+            variant="outline"
+            size="lg"
+            className="w-full sm:w-auto px-6 py-3"
+          >
+            Explore Games
+          </NeonButton>
         </motion.div>
       </div>
     </section>
