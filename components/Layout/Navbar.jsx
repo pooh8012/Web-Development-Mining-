@@ -1,4 +1,3 @@
-// components/Layout/Navbar.jsx
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -15,6 +14,7 @@ const navItems = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeHref, setActiveHref] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -25,42 +25,63 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    setActiveHref(router.pathname);
+  }, [router.pathname]);
+
   const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
       });
     }
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
   const handleClick = (e, href) => {
     setMobileMenuOpen(false);
+    setActiveHref(href);
+
+    if (href === '/') {
+      if (router.pathname === '/') {
+        e.preventDefault();
+        scrollToTop();
+        return;
+      }
+      return;
+    }
 
     if (href.includes('#')) {
       e.preventDefault();
       const [path, hash] = href.split('#');
 
-      if (path === '' || path === '/') {
-        if (router.pathname === '/') {
-          scrollToSection(hash);
-        } else {
-          router.push('/').then(() => {
-            setTimeout(() => scrollToSection(hash), 100);
-          });
-        }
-      } else {
-        router.push(href).then(() => {
-          setTimeout(() => scrollToSection(hash), 100);
-        });
+      if ((path === '' || path === '/') && router.pathname === '/') {
+        scrollToSection(hash);
+        return;
       }
+
+      router.push('/').then(() => {
+        setTimeout(() => scrollToSection(hash), 100);
+      });
+
+      return;
     }
+  };
+
+  const isActive = (itemHref) => {
+    return activeHref === itemHref;
   };
 
   return (
     <>
-      {/* Desktop Navbar - Centered Only */}
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -81,7 +102,7 @@ export default function Navbar() {
                   href={item.href}
                   onClick={(e) => handleClick(e, item.href)}
                   className={`text-sm xl:text-base font-medium transition-all duration-300 relative group ${
-                    router.pathname === item.href
+                    isActive(item.href)
                       ? 'text-accent-neon'
                       : 'text-gray-300 hover:text-white'
                   }`}
@@ -95,7 +116,6 @@ export default function Navbar() {
         </div>
       </motion.nav>
 
-      {/* Mobile Navbar */}
       <motion.nav
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -112,7 +132,6 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Hamburger Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="w-8 h-8 flex flex-col justify-center items-center gap-1.5 relative z-60"
@@ -141,7 +160,6 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Menu */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
@@ -149,7 +167,7 @@ export default function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.2 }}
-              className="absolute top-full left-4 right-4 mt-2"
+              className="absolute top-full left-4 right-4 mt-2 z-50"
             >
               <div className="glass-panel p-4">
                 <ul className="space-y-4">
@@ -159,7 +177,7 @@ export default function Navbar() {
                         href={item.href}
                         onClick={(e) => handleClick(e, item.href)}
                         className={`block py-2 px-4 rounded-lg transition-all ${
-                          router.pathname === item.href
+                          isActive(item.href)
                             ? 'bg-accent-neon/20 text-accent-neon'
                             : 'text-gray-300 hover:bg-white/5 hover:text-white'
                         }`}
@@ -175,7 +193,6 @@ export default function Navbar() {
         </AnimatePresence>
       </motion.nav>
 
-      {/* Mobile menu backdrop */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div

@@ -1,7 +1,7 @@
 // components/Visualizations/Globe3D.jsx
-import { useEffect, useRef, useState } from "react";
-import * as d3 from "d3";
-import * as topojson from "topojson-client";
+import { useEffect, useRef, useState } from 'react';
+import * as d3 from 'd3';
+import * as topojson from 'topojson-client';
 
 export default function Globe3D() {
   const svgRef = useRef(null);
@@ -21,8 +21,8 @@ export default function Globe3D() {
     };
 
     updateDimensions();
-    window.addEventListener("resize", updateDimensions);
-    return () => window.removeEventListener("resize", updateDimensions);
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
   }, []);
 
   useEffect(() => {
@@ -32,62 +32,62 @@ export default function Globe3D() {
     const sensitivity = 75;
 
     // Clear previous content
-    d3.select(svgRef.current).selectAll("*").remove();
+    d3.select(svgRef.current).selectAll('*').remove();
 
     // Setup
     const svg = d3
       .select(svgRef.current)
-      .attr("width", width)
-      .attr("height", height);
+      .attr('width', width)
+      .attr('height', height);
 
     // Add gradient definitions
-    const defs = svg.append("defs");
+    const defs = svg.append('defs');
 
     // Globe gradient
     const globeGradient = defs
-      .append("radialGradient")
-      .attr("id", "globe-gradient")
-      .attr("cx", "50%")
-      .attr("cy", "50%")
-      .attr("r", "50%");
+      .append('radialGradient')
+      .attr('id', 'globe-gradient')
+      .attr('cx', '50%')
+      .attr('cy', '50%')
+      .attr('r', '50%');
 
     globeGradient
-      .append("stop")
-      .attr("offset", "0%")
-      .style("stop-color", "#0a1929")
-      .style("stop-opacity", 0.6);
+      .append('stop')
+      .attr('offset', '0%')
+      .style('stop-color', '#0a1929')
+      .style('stop-opacity', 0.6);
 
     globeGradient
-      .append("stop")
-      .attr("offset", "100%")
-      .style("stop-color", "#050714")
-      .style("stop-opacity", 1);
+      .append('stop')
+      .attr('offset', '100%')
+      .style('stop-color', '#050714')
+      .style('stop-opacity', 1);
 
     // Glow effect
     const glowGradient = defs
-      .append("radialGradient")
-      .attr("id", "globe-glow")
-      .attr("cx", "50%")
-      .attr("cy", "50%")
-      .attr("r", "50%");
+      .append('radialGradient')
+      .attr('id', 'globe-glow')
+      .attr('cx', '50%')
+      .attr('cy', '50%')
+      .attr('r', '50%');
 
     glowGradient
-      .append("stop")
-      .attr("offset", "0%")
-      .style("stop-color", "#00d4ff")
-      .style("stop-opacity", 0.8);
+      .append('stop')
+      .attr('offset', '0%')
+      .style('stop-color', '#00d4ff')
+      .style('stop-opacity', 0.8);
 
     glowGradient
-      .append("stop")
-      .attr("offset", "50%")
-      .style("stop-color", "#00d4ff")
-      .style("stop-opacity", 0.3);
+      .append('stop')
+      .attr('offset', '50%')
+      .style('stop-color', '#00d4ff')
+      .style('stop-opacity', 0.3);
 
     glowGradient
-      .append("stop")
-      .attr("offset", "100%")
-      .style("stop-color", "#00d4ff")
-      .style("stop-opacity", 0);
+      .append('stop')
+      .attr('offset', '100%')
+      .style('stop-color', '#00d4ff')
+      .style('stop-opacity', 0);
 
     const projection = d3
       .geoOrthographic()
@@ -96,85 +96,85 @@ export default function Globe3D() {
       .rotate(rotationRef.current);
 
     const path = d3.geoPath().projection(projection);
-    const globe = svg.append("g");
+    const globe = svg.append('g');
 
     // Add glow effect behind globe
     globe
-      .append("circle")
-      .attr("cx", width / 2)
-      .attr("cy", height / 2)
-      .attr("r", projection.scale() * 1.2)
-      .style("fill", "url(#globe-glow)")
-      .style("opacity", 0.5);
+      .append('circle')
+      .attr('cx', width / 2)
+      .attr('cy', height / 2)
+      .attr('r', projection.scale() * 1.2)
+      .style('fill', 'url(#globe-glow)')
+      .style('opacity', 0.5);
 
     // Add water (sphere)
     globe
-      .append("circle")
-      .attr("cx", width / 2)
-      .attr("cy", height / 2)
-      .attr("r", projection.scale())
-      .style("fill", "url(#globe-gradient)")
-      .style("filter", "drop-shadow(0 0 20px rgba(0, 212, 255, 0.5))");
+      .append('circle')
+      .attr('cx', width / 2)
+      .attr('cy', height / 2)
+      .attr('r', projection.scale())
+      .style('fill', 'url(#globe-gradient)')
+      .style('filter', 'drop-shadow(0 0 20px rgba(0, 212, 255, 0.5))');
 
     // Add graticule (grid lines)
     const graticule = d3.geoGraticule();
     globe
-      .append("path")
+      .append('path')
       .datum(graticule)
-      .attr("d", path)
-      .style("fill", "none")
-      .style("stroke", "#00d4ff")
-      .style("stroke-width", 0.3)
-      .style("opacity", 0.3);
+      .attr('d', path)
+      .style('fill', 'none')
+      .style('stroke', '#00d4ff')
+      .style('stroke-width', 0.3)
+      .style('opacity', 0.3);
 
     // Load world data
-    d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
+    d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
       .then((world) => {
         const countries = topojson.feature(world, world.objects.countries);
 
         // Mining activity data (sample - replace with real data)
         const miningData = {
-          840: { name: "USA", intensity: 0.9 }, // USA
-          156: { name: "China", intensity: 1.0 }, // China
-          "036": { name: "Australia", intensity: 0.8 }, // Australia
-          124: { name: "Canada", intensity: 0.7 }, // Canada
-          "076": { name: "Brazil", intensity: 0.6 }, // Brazil
-          643: { name: "Russia", intensity: 0.7 }, // Russia
-          710: { name: "South Africa", intensity: 0.8 }, // South Africa
-          152: { name: "Chile", intensity: 0.9 }, // Chile
-          604: { name: "Peru", intensity: 0.7 }, // Peru
-          360: { name: "Indonesia", intensity: 0.6 }, // Indonesia
+          840: { name: 'USA', intensity: 0.9 }, // USA
+          156: { name: 'China', intensity: 1.0 }, // China
+          '036': { name: 'Australia', intensity: 0.8 }, // Australia
+          124: { name: 'Canada', intensity: 0.7 }, // Canada
+          '076': { name: 'Brazil', intensity: 0.6 }, // Brazil
+          643: { name: 'Russia', intensity: 0.7 }, // Russia
+          710: { name: 'South Africa', intensity: 0.8 }, // South Africa
+          152: { name: 'Chile', intensity: 0.9 }, // Chile
+          604: { name: 'Peru', intensity: 0.7 }, // Peru
+          360: { name: 'Indonesia', intensity: 0.6 }, // Indonesia
         };
 
         // Draw countries
-        const countriesGroup = globe.append("g");
+        const countriesGroup = globe.append('g');
 
         countriesGroup
-          .selectAll("path")
+          .selectAll('path')
           .data(countries.features)
           .enter()
-          .append("path")
-          .attr("d", path)
-          .style("fill", (d) => {
+          .append('path')
+          .attr('d', path)
+          .style('fill', (d) => {
             const mining = miningData[d.id];
             if (mining) {
               // Color based on mining intensity
               const intensity = mining.intensity;
-              return d3.interpolateRgb("#0a1929", "#ff006e")(intensity);
+              return d3.interpolateRgb('#0a1929', '#ff006e')(intensity);
             }
-            return "#0a1929";
+            return '#0a1929';
           })
-          .style("stroke", "#00d4ff")
-          .style("stroke-width", 0.5)
-          .style("cursor", "pointer")
-          .on("mouseover", function (event, d) {
+          .style('stroke', '#00d4ff')
+          .style('stroke-width', 0.5)
+          .style('cursor', 'pointer')
+          .on('mouseover', function (event, d) {
             const mining = miningData[d.id];
             if (mining) {
               d3.select(this)
                 .transition()
                 .duration(200)
-                .style("fill", "#00d4ff")
-                .style("stroke-width", 2);
+                .style('fill', '#00d4ff')
+                .style('stroke-width', 2);
 
               setSelectedCountry({
                 name: mining.name,
@@ -182,39 +182,39 @@ export default function Globe3D() {
               });
             }
           })
-          .on("mouseout", function (event, d) {
+          .on('mouseout', function (event, d) {
             const mining = miningData[d.id];
             d3.select(this)
               .transition()
               .duration(200)
               .style(
-                "fill",
+                'fill',
                 mining
-                  ? d3.interpolateRgb("#0a1929", "#ff006e")(mining.intensity)
-                  : "#0a1929"
+                  ? d3.interpolateRgb('#0a1929', '#ff006e')(mining.intensity)
+                  : '#0a1929'
               )
-              .style("stroke-width", 0.5);
+              .style('stroke-width', 0.5);
 
             setSelectedCountry(null);
           })
-          .on("click", function (event, d) {
+          .on('click', function (event, d) {
             const mining = miningData[d.id];
             if (mining) {
-              console.log("Clicked country:", mining.name);
+              console.log('Clicked country:', mining.name);
               // Add your click handler here
             }
           });
 
         // Add mining hotspots (points)
         const miningPoints = [
-          { coords: [-122.4194, 37.7749], name: "Silicon Valley Data Mining" },
-          { coords: [116.4074, 39.9042], name: "Beijing Tech Hub" },
-          { coords: [151.2093, -33.8688], name: "Sydney Mining Operations" },
-          { coords: [-114.0719, 51.0447], name: "Alberta Oil Sands" },
-          { coords: [-70.6693, -33.4489], name: "Chilean Copper Mines" },
+          { coords: [-122.4194, 37.7749], name: 'Silicon Valley Data Mining' },
+          { coords: [116.4074, 39.9042], name: 'Beijing Tech Hub' },
+          { coords: [151.2093, -33.8688], name: 'Sydney Mining Operations' },
+          { coords: [-114.0719, 51.0447], name: 'Alberta Oil Sands' },
+          { coords: [-70.6693, -33.4489], name: 'Chilean Copper Mines' },
         ];
 
-        const pointsGroup = globe.append("g");
+        const pointsGroup = globe.append('g');
 
         function updatePoints() {
           const visiblePoints = miningPoints.filter((d) => {
@@ -223,29 +223,29 @@ export default function Globe3D() {
           });
 
           const points = pointsGroup
-            .selectAll("circle")
+            .selectAll('circle')
             .data(visiblePoints, (d) => d.name);
 
           points.exit().remove();
 
           points
             .enter()
-            .append("circle")
+            .append('circle')
             .merge(points)
-            .attr("cx", (d) => projection(d.coords)[0])
-            .attr("cy", (d) => projection(d.coords)[1])
-            .attr("r", 3)
-            .style("fill", "#00d4ff")
-            .style("opacity", 0.8)
-            .style("filter", "drop-shadow(0 0 5px #00d4ff)");
+            .attr('cx', (d) => projection(d.coords)[0])
+            .attr('cy', (d) => projection(d.coords)[1])
+            .attr('r', 3)
+            .style('fill', '#00d4ff')
+            .style('opacity', 0.8)
+            .style('filter', 'drop-shadow(0 0 5px #00d4ff)');
 
           pointsGroup
-            .selectAll("circle")
-            .on("mouseover", function (event, d) {
-              d3.select(this).transition().duration(200).attr("r", 5);
+            .selectAll('circle')
+            .on('mouseover', function (event, d) {
+              d3.select(this).transition().duration(200).attr('r', 5);
             })
-            .on("mouseout", function (event, d) {
-              d3.select(this).transition().duration(200).attr("r", 3);
+            .on('mouseout', function (event, d) {
+              d3.select(this).transition().duration(200).attr('r', 3);
             });
         }
 
@@ -253,14 +253,14 @@ export default function Globe3D() {
         let currentRotation = rotationRef.current;
         const drag = d3
           .drag()
-          .on("start", function (event) {
+          .on('start', function (event) {
             currentRotation = projection.rotate();
             if (autoRotateRef.current) {
               autoRotateRef.current.stop();
               autoRotateRef.current = null;
             }
           })
-          .on("drag", function (event) {
+          .on('drag', function (event) {
             const k = sensitivity / projection.scale();
             projection.rotate([
               currentRotation[0] + event.x * k,
@@ -281,13 +281,13 @@ export default function Globe3D() {
         });
 
         // Stop auto-rotation on user interaction
-        svg.on("mousedown", () => {
+        svg.on('mousedown', () => {
           if (autoRotateRef.current) {
             autoRotateRef.current.stop();
             autoRotateRef.current = null;
           }
         });
-        svg.on("touchstart", () => {
+        svg.on('touchstart', () => {
           if (autoRotateRef.current) {
             autoRotateRef.current.stop();
             autoRotateRef.current = null;
@@ -295,8 +295,8 @@ export default function Globe3D() {
         });
 
         function updatePaths() {
-          countriesGroup.selectAll("path").attr("d", path);
-          globe.select("path").attr("d", path);
+          countriesGroup.selectAll('path').attr('d', path);
+          globe.select('path').attr('d', path);
           updatePoints();
         }
 
@@ -304,15 +304,15 @@ export default function Globe3D() {
         updatePoints();
       })
       .catch((error) => {
-        console.error("Error loading world data:", error);
+        console.error('Error loading world data:', error);
         // Fallback message
         svg
-          .append("text")
-          .attr("x", width / 2)
-          .attr("y", height / 2)
-          .attr("text-anchor", "middle")
-          .attr("fill", "#94a3b8")
-          .text("Loading globe data...");
+          .append('text')
+          .attr('x', width / 2)
+          .attr('y', height / 2)
+          .attr('text-anchor', 'middle')
+          .attr('fill', '#94a3b8')
+          .text('Loading globe data...');
       });
 
     // Cleanup
@@ -345,14 +345,14 @@ export default function Globe3D() {
         <div className="flex items-center gap-2 text-xs">
           <div
             className="w-3 h-3 rounded-full"
-            style={{ background: "#0a1929" }}
+            style={{ background: '#0a1929' }}
           ></div>
           <span>Low</span>
         </div>
         <div className="flex items-center gap-2 text-xs">
           <div
             className="w-3 h-3 rounded-full"
-            style={{ background: "#ff006e" }}
+            style={{ background: '#ff006e' }}
           ></div>
           <span>High</span>
         </div>

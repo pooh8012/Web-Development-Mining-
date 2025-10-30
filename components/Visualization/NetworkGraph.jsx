@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import * as d3 from "d3";
-import useD3 from "../../hooks/useD3";
+import { useEffect, useRef, useState } from 'react';
+import * as d3 from 'd3';
+import useD3 from '../../hooks/useD3';
 
 export default function NetworkGraph({ confidenceThreshold = 50 }) {
   const [dimensions, setDimensions] = useState({ width: 800, height: 500 });
@@ -16,8 +16,8 @@ export default function NetworkGraph({ confidenceThreshold = 50 }) {
     };
 
     updateDimensions();
-    window.addEventListener("resize", updateDimensions);
-    return () => window.removeEventListener("resize", updateDimensions);
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
   }, []);
 
   const ref = useD3(
@@ -25,7 +25,7 @@ export default function NetworkGraph({ confidenceThreshold = 50 }) {
       const { width, height } = dimensions;
 
       // Clear previous content
-      svg.selectAll("*").remove();
+      svg.selectAll('*').remove();
 
       // Generate sample data
       const nodeCount = width < 640 ? 15 : 30;
@@ -72,110 +72,110 @@ export default function NetworkGraph({ confidenceThreshold = 50 }) {
       const simulation = d3
         .forceSimulation(nodes)
         .force(
-          "link",
+          'link',
           d3
             .forceLink(filteredLinks)
             .id((d) => d.id)
             .distance(linkDistance)
         )
-        .force("charge", d3.forceManyBody().strength(chargeStrength))
-        .force("center", d3.forceCenter(width / 2, height / 2))
+        .force('charge', d3.forceManyBody().strength(chargeStrength))
+        .force('center', d3.forceCenter(width / 2, height / 2))
         .force(
-          "collision",
+          'collision',
           d3.forceCollide().radius((d) => d.value + 5)
         );
 
       // Create container
-      const g = svg.append("g");
+      const g = svg.append('g');
 
       // Add zoom behavior
       const zoom = d3
         .zoom()
         .scaleExtent([0.5, 4])
-        .on("zoom", (event) => {
-          g.attr("transform", event.transform);
+        .on('zoom', (event) => {
+          g.attr('transform', event.transform);
         });
 
       svg.call(zoom);
 
       // Create links
       const link = g
-        .append("g")
-        .selectAll("line")
+        .append('g')
+        .selectAll('line')
         .data(filteredLinks)
         .enter()
-        .append("line")
-        .attr("stroke", "#00d4ff")
-        .attr("stroke-opacity", (d) => (d.confidence / 100) * 0.6)
-        .attr("stroke-width", (d) => Math.sqrt(d.value) * 0.5);
+        .append('line')
+        .attr('stroke', '#00d4ff')
+        .attr('stroke-opacity', (d) => (d.confidence / 100) * 0.6)
+        .attr('stroke-width', (d) => Math.sqrt(d.value) * 0.5);
 
       // Create nodes
       const node = g
-        .append("g")
-        .selectAll("circle")
+        .append('g')
+        .selectAll('circle')
         .data(nodes)
         .enter()
-        .append("circle")
-        .attr("r", (d) => d.value)
-        .attr("fill", (d) => (d.group === 1 ? "#00d4ff" : "#b829dd"))
-        .attr("fill-opacity", 0.8)
-        .attr("stroke", (d) => (d.group === 1 ? "#00d4ff" : "#b829dd"))
-        .attr("stroke-width", 2)
-        .style("cursor", "pointer")
+        .append('circle')
+        .attr('r', (d) => d.value)
+        .attr('fill', (d) => (d.group === 1 ? '#00d4ff' : '#b829dd'))
+        .attr('fill-opacity', 0.8)
+        .attr('stroke', (d) => (d.group === 1 ? '#00d4ff' : '#b829dd'))
+        .attr('stroke-width', 2)
+        .style('cursor', 'pointer')
         .call(
           d3
             .drag()
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended)
+            .on('start', dragstarted)
+            .on('drag', dragged)
+            .on('end', dragended)
         );
 
       // Add labels (hide on small screens)
       if (width > 640) {
         const labels = g
-          .append("g")
-          .selectAll("text")
+          .append('g')
+          .selectAll('text')
           .data(nodes)
           .enter()
-          .append("text")
+          .append('text')
           .text((d) => d.name)
-          .attr("font-size", "10px")
-          .attr("fill", "#94a3b8")
-          .attr("text-anchor", "middle")
-          .attr("dy", -15);
+          .attr('font-size', '10px')
+          .attr('fill', '#94a3b8')
+          .attr('text-anchor', 'middle')
+          .attr('dy', -15);
       }
 
       // Add hover effects
       node
-        .on("mouseover", function (event, d) {
+        .on('mouseover', function (event, d) {
           d3.select(this)
             .transition()
             .duration(200)
-            .attr("r", d.value * 1.2)
-            .attr("fill-opacity", 1);
+            .attr('r', d.value * 1.2)
+            .attr('fill-opacity', 1);
         })
-        .on("mouseout", function (event, d) {
+        .on('mouseout', function (event, d) {
           d3.select(this)
             .transition()
             .duration(200)
-            .attr("r", d.value)
-            .attr("fill-opacity", 0.8);
+            .attr('r', d.value)
+            .attr('fill-opacity', 0.8);
         });
 
       // Update positions on tick
-      simulation.on("tick", () => {
+      simulation.on('tick', () => {
         link
-          .attr("x1", (d) => d.source.x)
-          .attr("y1", (d) => d.source.y)
-          .attr("x2", (d) => d.target.x)
-          .attr("y2", (d) => d.target.y);
+          .attr('x1', (d) => d.source.x)
+          .attr('y1', (d) => d.source.y)
+          .attr('x2', (d) => d.target.x)
+          .attr('y2', (d) => d.target.y);
 
-        node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+        node.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
 
         if (width > 640) {
-          g.selectAll("text")
-            .attr("x", (d) => d.x)
-            .attr("y", (d) => d.y);
+          g.selectAll('text')
+            .attr('x', (d) => d.x)
+            .attr('y', (d) => d.y);
         }
       });
 
