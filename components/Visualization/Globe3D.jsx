@@ -1,4 +1,3 @@
-// components/Visualizations/Globe3D.jsx
 import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
@@ -15,7 +14,7 @@ export default function Globe3D() {
     const updateDimensions = () => {
       if (containerRef.current) {
         const { width } = containerRef.current.getBoundingClientRect();
-        const height = Math.min(width, 600); // Keep it square-ish, max 600px
+        const height = Math.min(width, 600);
         setDimensions({ width, height });
       }
     };
@@ -31,16 +30,16 @@ export default function Globe3D() {
     const { width, height } = dimensions;
     const sensitivity = 75;
 
-    // Clear previous content
+    // Clear any existing SVG content
     d3.select(svgRef.current).selectAll('*').remove();
 
-    // Setup
+    // Setup SVG
     const svg = d3
       .select(svgRef.current)
       .attr('width', width)
       .attr('height', height);
 
-    // Add gradient definitions
+    // === DEFINE GRADIENTS ===
     const defs = svg.append('defs');
 
     // Globe gradient
@@ -56,7 +55,6 @@ export default function Globe3D() {
       .attr('offset', '0%')
       .style('stop-color', '#0a1929')
       .style('stop-opacity', 0.6);
-
     globeGradient
       .append('stop')
       .attr('offset', '100%')
@@ -76,19 +74,18 @@ export default function Globe3D() {
       .attr('offset', '0%')
       .style('stop-color', '#00d4ff')
       .style('stop-opacity', 0.8);
-
     glowGradient
       .append('stop')
       .attr('offset', '50%')
       .style('stop-color', '#00d4ff')
       .style('stop-opacity', 0.3);
-
     glowGradient
       .append('stop')
       .attr('offset', '100%')
       .style('stop-color', '#00d4ff')
       .style('stop-opacity', 0);
 
+    // === GLOBE SETUP ===
     const projection = d3
       .geoOrthographic()
       .scale(Math.min(width, height) / 2.2)
@@ -98,7 +95,7 @@ export default function Globe3D() {
     const path = d3.geoPath().projection(projection);
     const globe = svg.append('g');
 
-    // Add glow effect behind globe
+    // Glow layer
     globe
       .append('circle')
       .attr('cx', width / 2)
@@ -107,7 +104,7 @@ export default function Globe3D() {
       .style('fill', 'url(#globe-glow)')
       .style('opacity', 0.5);
 
-    // Add water (sphere)
+    // Ocean layer
     globe
       .append('circle')
       .attr('cx', width / 2)
@@ -116,7 +113,7 @@ export default function Globe3D() {
       .style('fill', 'url(#globe-gradient)')
       .style('filter', 'drop-shadow(0 0 20px rgba(0, 212, 255, 0.5))');
 
-    // Add graticule (grid lines)
+    // Gridlines
     const graticule = d3.geoGraticule();
     globe
       .append('path')
@@ -127,26 +124,10 @@ export default function Globe3D() {
       .style('stroke-width', 0.3)
       .style('opacity', 0.3);
 
-    // Load world data
+    // === WORLD MAP + COMPANY DATA ===
     d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
-      .then((world) => {
+      .then(async (world) => {
         const countries = topojson.feature(world, world.objects.countries);
-
-        // Mining activity data (sample - replace with real data)
-        const miningData = {
-          840: { name: 'USA', intensity: 0.9 }, // USA
-          156: { name: 'China', intensity: 1.0 }, // China
-          '036': { name: 'Australia', intensity: 0.8 }, // Australia
-          124: { name: 'Canada', intensity: 0.7 }, // Canada
-          '076': { name: 'Brazil', intensity: 0.6 }, // Brazil
-          643: { name: 'Russia', intensity: 0.7 }, // Russia
-          710: { name: 'South Africa', intensity: 0.8 }, // South Africa
-          152: { name: 'Chile', intensity: 0.9 }, // Chile
-          604: { name: 'Peru', intensity: 0.7 }, // Peru
-          360: { name: 'Indonesia', intensity: 0.6 }, // Indonesia
-        };
-
-        // Draw countries
         const countriesGroup = globe.append('g');
 
         countriesGroup
@@ -155,69 +136,47 @@ export default function Globe3D() {
           .enter()
           .append('path')
           .attr('d', path)
-          .style('fill', (d) => {
-            const mining = miningData[d.id];
-            if (mining) {
-              // Color based on mining intensity
-              const intensity = mining.intensity;
-              return d3.interpolateRgb('#0a1929', '#ff006e')(intensity);
-            }
-            return '#0a1929';
-          })
+          .style('fill', '#0a1929')
           .style('stroke', '#00d4ff')
-          .style('stroke-width', 0.5)
-          .style('cursor', 'pointer')
-          .on('mouseover', function (event, d) {
-            const mining = miningData[d.id];
-            if (mining) {
-              d3.select(this)
-                .transition()
-                .duration(200)
-                .style('fill', '#00d4ff')
-                .style('stroke-width', 2);
+          .style('stroke-width', 0.4)
+          .style('opacity', 0.8);
 
-              setSelectedCountry({
-                name: mining.name,
-                intensity: mining.intensity,
-              });
-            }
-          })
-          .on('mouseout', function (event, d) {
-            const mining = miningData[d.id];
-            d3.select(this)
-              .transition()
-              .duration(200)
-              .style(
-                'fill',
-                mining
-                  ? d3.interpolateRgb('#0a1929', '#ff006e')(mining.intensity)
-                  : '#0a1929'
-              )
-              .style('stroke-width', 0.5);
+        // === LOAD COMPANY DATA ===
+        const loadCompanyData = async () => {
+          const mining = await d3.csv('/data/MiningCompanies_OCT2025.csv');
+          const dataMining = await d3.csv(
+            '/data/DataMining_Companies_OCT2025.csv'
+          );
+          const ai = await d3.csv('/data/AICompanies_OCT2025.csv');
 
-            setSelectedCountry(null);
-          })
-          .on('click', function (event, d) {
-            const mining = miningData[d.id];
-            if (mining) {
-              console.log('Clicked country:', mining.name);
-              // Add your click handler here
-            }
-          });
+          const allCompanies = [
+            ...mining.map((d) => ({ ...d, type: 'Mining' })),
+            ...dataMining.map((d) => ({ ...d, type: 'DataMining' })),
+            ...ai.map((d) => ({ ...d, type: 'AI' })),
+          ];
 
-        // Add mining hotspots (points)
-        const miningPoints = [
-          { coords: [-122.4194, 37.7749], name: 'Silicon Valley Data Mining' },
-          { coords: [116.4074, 39.9042], name: 'Beijing Tech Hub' },
-          { coords: [151.2093, -33.8688], name: 'Sydney Mining Operations' },
-          { coords: [-114.0719, 51.0447], name: 'Alberta Oil Sands' },
-          { coords: [-70.6693, -33.4489], name: 'Chilean Copper Mines' },
-        ];
+          return allCompanies
+            .filter((d) => d.Latitude && d.Longitude)
+            .map((d) => ({
+              name: d['Company Name'] || d.Name || 'Unnamed Company',
+              coords: [parseFloat(d.Longitude), parseFloat(d.Latitude)],
+              country: d.Country || '',
+              type: d.type,
+              confidence: d.Confidence || '',
+            }));
+        };
 
         const pointsGroup = globe.append('g');
+        const companyData = await loadCompanyData();
+
+        const colorByType = {
+          Mining: '#ff6b6b',
+          DataMining: '#00d4ff',
+          AI: '#b26bff',
+        };
 
         function updatePoints() {
-          const visiblePoints = miningPoints.filter((d) => {
+          const visiblePoints = companyData.filter((d) => {
             const coords = projection(d.coords);
             return coords && projection.invert(coords);
           });
@@ -228,28 +187,74 @@ export default function Globe3D() {
 
           points.exit().remove();
 
+          const colorByType = {
+            Mining: '#ff6b6b',
+            DataMining: '#00d4ff',
+            AI: '#b26bff',
+          };
+
+          // Enter + update
           points
             .enter()
             .append('circle')
             .merge(points)
             .attr('cx', (d) => projection(d.coords)[0])
             .attr('cy', (d) => projection(d.coords)[1])
-            .attr('r', 3)
-            .style('fill', '#00d4ff')
-            .style('opacity', 0.8)
-            .style('filter', 'drop-shadow(0 0 5px #00d4ff)');
+            .attr('r', 5.5) // increased from 3
+            .style('fill', (d) => colorByType[d.type] || '#00d4ff')
+            .style('opacity', 1)
+            .style(
+              'filter',
+              (d) => `drop-shadow(0 0 8px ${colorByType[d.type] || '#00d4ff'})`
+            )
+            .transition()
+            .duration(1000)
+            .ease(d3.easeSinInOut)
+            .attr('r', 6)
+            .transition()
+            .duration(1000)
+            .ease(d3.easeSinInOut)
+            .attr('r', 5.5)
+            .on('end', function () {
+              d3.select(this).transition().duration(1000).ease(d3.easeSinInOut);
+            });
 
+          // Hover interaction
           pointsGroup
             .selectAll('circle')
             .on('mouseover', function (event, d) {
-              d3.select(this).transition().duration(200).attr('r', 5);
+              d3.select(this)
+                .transition()
+                .duration(200)
+                .attr('r', 9)
+                .style('opacity', 1)
+                .style(
+                  'filter',
+                  `drop-shadow(0 0 12px ${colorByType[d.type] || '#00d4ff'})`
+                );
+              setSelectedCountry({
+                name: d.name,
+                type: d.type,
+                country: d.country,
+                confidence: d.confidence,
+              });
             })
-            .on('mouseout', function (event, d) {
-              d3.select(this).transition().duration(200).attr('r', 3);
+            .on('mouseout', function () {
+              d3.select(this)
+                .transition()
+                .duration(200)
+                .attr('r', 5.5)
+                .style('opacity', 1)
+                .style(
+                  'filter',
+                  (d) =>
+                    `drop-shadow(0 0 8px ${colorByType[d.type] || '#00d4ff'})`
+                );
+              setSelectedCountry(null);
             });
         }
 
-        // Rotation
+        // Rotation interaction
         let currentRotation = rotationRef.current;
         const drag = d3
           .drag()
@@ -272,26 +277,11 @@ export default function Globe3D() {
 
         svg.call(drag);
 
-        // Auto-rotation
-        autoRotateRef.current = d3.timer(function (elapsed) {
+        autoRotateRef.current = d3.timer(function () {
           const rotate = projection.rotate();
           projection.rotate([rotate[0] + 0.2, rotate[1], rotate[2]]);
           rotationRef.current = projection.rotate();
           updatePaths();
-        });
-
-        // Stop auto-rotation on user interaction
-        svg.on('mousedown', () => {
-          if (autoRotateRef.current) {
-            autoRotateRef.current.stop();
-            autoRotateRef.current = null;
-          }
-        });
-        svg.on('touchstart', () => {
-          if (autoRotateRef.current) {
-            autoRotateRef.current.stop();
-            autoRotateRef.current = null;
-          }
         });
 
         function updatePaths() {
@@ -300,12 +290,10 @@ export default function Globe3D() {
           updatePoints();
         }
 
-        // Initial update
         updatePoints();
       })
       .catch((error) => {
         console.error('Error loading world data:', error);
-        // Fallback message
         svg
           .append('text')
           .attr('x', width / 2)
@@ -327,40 +315,47 @@ export default function Globe3D() {
     <div ref={containerRef} className="w-full h-full relative">
       <svg ref={svgRef} className="w-full h-full" />
 
-      {/* Country info overlay */}
+      {/* Tooltip Info */}
       {selectedCountry && (
         <div className="absolute top-4 left-4 glass-panel p-4 pointer-events-none">
           <h4 className="text-lg font-semibold text-accent-neon">
             {selectedCountry.name}
           </h4>
-          <p className="text-sm text-gray-300">
-            Mining Intensity: {(selectedCountry.intensity * 100).toFixed(0)}%
+          {selectedCountry.country && (
+            <p className="text-sm text-gray-300">
+              🌍 {selectedCountry.country}
+            </p>
+          )}
+          <p className="text-sm text-gray-400">
+            🏭 Type: {selectedCountry.type}
           </p>
+          {selectedCountry.confidence && (
+            <p className="text-sm text-gray-400">
+              🔹 Confidence: {selectedCountry.confidence}%
+            </p>
+          )}
         </div>
       )}
 
       {/* Legend */}
-      <div className="absolute bottom-4 right-4 glass-panel p-4 pointer-events-none">
-        <h5 className="text-sm font-semibold mb-2">Mining Activity</h5>
-        <div className="flex items-center gap-2 text-xs">
-          <div
-            className="w-3 h-3 rounded-full"
-            style={{ background: '#0a1929' }}
-          ></div>
-          <span>Low</span>
+      <div className="absolute bottom-4 right-4 glass-panel p-4 pointer-events-none text-sm">
+        <h5 className="font-semibold mb-2 text-white">Company Type</h5>
+        <div className="flex items-center gap-2">
+          <span className="w-3 h-3 rounded-full bg-[#ff6b6b]" />{' '}
+          <span>Mining</span>
         </div>
-        <div className="flex items-center gap-2 text-xs">
-          <div
-            className="w-3 h-3 rounded-full"
-            style={{ background: '#ff006e' }}
-          ></div>
-          <span>High</span>
+        <div className="flex items-center gap-2">
+          <span className="w-3 h-3 rounded-full bg-[#00d4ff]" />{' '}
+          <span>Data Mining</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="w-3 h-3 rounded-full bg-[#b26bff]" /> <span>AI</span>
         </div>
       </div>
 
       {/* Instructions */}
       <div className="absolute top-4 right-4 text-xs text-gray-400 pointer-events-none">
-        <p>Drag to rotate • Click countries for details</p>
+        <p>Drag to rotate • Hover for details</p>
       </div>
     </div>
   );

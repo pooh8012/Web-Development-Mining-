@@ -1,12 +1,11 @@
-// components/Data/DataCard.jsx - Fixed version
-import NeonButton from "../UI/NeonButton";
+import NeonButton from '../UI/NeonButton';
 
 const fileTypeIcons = {
-  PDF: "📄",
-  ZIP: "📦",
-  CSV: "📊",
-  MP3: "🎵",
-  JSON: "📋",
+  PDF: '📄',
+  ZIP: '📦',
+  CSV: '📊',
+  MP3: '🎵',
+  JSON: '📋',
 };
 
 export default function DataCard({ data }) {
@@ -18,7 +17,7 @@ export default function DataCard({ data }) {
     <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/80 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6 h-full flex flex-col hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/20">
       {/* Header with icon and file type */}
       <div className="flex items-start justify-between mb-4">
-        <span className="text-3xl">{fileTypeIcons[data.fileType] || "📄"}</span>
+        <span className="text-3xl">{fileTypeIcons[data.fileType] || '📄'}</span>
         <span className="px-3 py-1 text-xs font-medium rounded-full bg-slate-700/50 border border-slate-600/50 text-slate-300">
           {data.fileType}
         </span>

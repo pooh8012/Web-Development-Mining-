@@ -31,7 +31,7 @@ export default function HeroSection() {
     after:opacity-70
   "
         >
-          Data mining / Mining
+          Mining / Data Mining
         </span>
       </div>
 
@@ -47,8 +47,11 @@ export default function HeroSection() {
           transition={{ delay: 0.05, duration: 0.4 }}
           className="mt-2 text-[clamp(0.95rem,1.6vw,1.15rem)] text-gray-300 max-w-3xl mx-auto"
         >
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry.{' '}
+          Mining/Data Mining is an ongoing project that explores the material
+          and conceptual intersections of resource mining and data mining. Our
+          goal is to shed light on the social, economic, and environmental
+          impacts of systems that create value by extracting and manipulating
+          material that has been construed as “raw” and open to exploitation.
         </motion.p>
 
         <motion.div
