@@ -3,7 +3,6 @@ import Head from 'next/head';
 import { motion } from 'framer-motion';
 
 export default function GamingPage() {
-  // Each object here is one "brief"
   const games = [
     {
       emoji: '🌍',

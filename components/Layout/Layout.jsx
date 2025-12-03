@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
-import { useRouter } from "next/router";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
+import { useEffect, useRef } from 'react';
+import { useRouter } from 'next/router';
+import Navbar from './Navbar';
+import Footer from './Footer';
 
 function DataMiningBackground() {
   const canvasRef = useRef(null);
@@ -11,7 +11,7 @@ function DataMiningBackground() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     const updateCanvasSize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -36,9 +36,9 @@ function DataMiningBackground() {
         this.vx = (Math.random() - 0.5) * 0.5;
         this.vy = (Math.random() - 0.5) * 0.5;
         this.opacity = Math.random() * 0.6 + 0.4;
-        this.type = Math.random() > 0.7 ? "data" : "mining";
+        this.type = Math.random() > 0.7 ? 'data' : 'mining';
         this.pulse = Math.random() * Math.PI * 2;
-        this.color = this.type === "data" ? "#00d4ff" : "#b829dd";
+        this.color = this.type === 'data' ? '#00d4ff' : '#b829dd';
       }
 
       update() {
@@ -59,18 +59,16 @@ function DataMiningBackground() {
         ctx.save();
         ctx.globalAlpha = this.opacity;
 
-        // Glow effect
         ctx.shadowBlur = 10;
         ctx.shadowColor = this.color;
 
-        // Main node
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.shadowBlur = 0;
-        ctx.fillStyle = "#ffffff";
+        ctx.fillStyle = '#ffffff';
         ctx.globalAlpha = 0.8;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size * 0.3, 0, Math.PI * 2);
@@ -122,7 +120,7 @@ function DataMiningBackground() {
       draw() {
         ctx.save();
         ctx.globalAlpha = this.opacity * 0.3;
-        ctx.strokeStyle = "#00d4ff";
+        ctx.strokeStyle = '#00d4ff';
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(this.start.x, this.start.y);
@@ -132,9 +130,9 @@ function DataMiningBackground() {
         // Draw data particles
         this.particles.forEach((particle) => {
           ctx.globalAlpha = particle.life * 0.8;
-          ctx.fillStyle = "#00ffff";
+          ctx.fillStyle = '#00ffff';
           ctx.shadowBlur = 5;
-          ctx.shadowColor = "#00ffff";
+          ctx.shadowColor = '#00ffff';
           ctx.beginPath();
           ctx.arc(particle.x, particle.y, 2, 0, Math.PI * 2);
           ctx.fill();
@@ -169,55 +167,12 @@ function DataMiningBackground() {
 
     initNodes();
 
-    const binaryDrops = [];
-    class BinaryDrop {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = -20;
-        this.speed = Math.random() * 2 + 1;
-        this.text = Math.random() > 0.5 ? "1" : "0";
-        this.opacity = Math.random() * 0.3 + 0.1;
-      }
-
-      update() {
-        this.y += this.speed;
-        if (this.y > canvas.height + 20) {
-          this.y = -20;
-          this.x = Math.random() * canvas.width;
-        }
-      }
-
-      draw() {
-        ctx.save();
-        ctx.globalAlpha = this.opacity;
-        ctx.fillStyle = "#00ff00";
-        ctx.font = "12px monospace";
-        ctx.fillText(this.text, this.x, this.y);
-        ctx.restore();
-      }
-    }
-
-    const binaryCount = window.innerWidth < 768 ? 20 : 40;
-    for (let i = 0; i < binaryCount; i++) {
-      binaryDrops.push(new BinaryDrop());
-    }
-
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      binaryDrops.forEach((drop) => {
-        drop.update();
-        drop.draw();
-      });
 
       dataNodes.forEach((node) => {
         node.update();
         node.draw();
-      });
-
-      connections.forEach((connection) => {
-        connection.update();
-        connection.draw();
       });
 
       animationRef.current = requestAnimationFrame(animate);
@@ -230,10 +185,10 @@ function DataMiningBackground() {
       initNodes();
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
@@ -244,7 +199,7 @@ function DataMiningBackground() {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 z-0 pointer-events-none opacity-60"
-      style={{ background: "transparent" }}
+      style={{ background: 'transparent' }}
     />
   );
 }
@@ -253,9 +208,9 @@ export default function Layout({ children }) {
   const router = useRouter();
 
   const isGamePage =
-    router.pathname.startsWith("/games/") &&
-    router.pathname !== "/games" &&
-    router.pathname !== "/games/";
+    router.pathname.startsWith('/games/') &&
+    router.pathname !== '/games' &&
+    router.pathname !== '/games/';
 
   return (
     <div className="min-h-screen relative overflow-hidden">
