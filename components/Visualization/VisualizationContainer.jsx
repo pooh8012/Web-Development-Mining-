@@ -5,8 +5,8 @@ export default function VisualizationContainer({
   children,
   loading = false,
   className = '',
-  noMinHeight = false, // fill parent height when true
-  bare = false, // no glass, no padding (for full-bleed views)
+  noMinHeight = false,
+  bare = false,
 }) {
   const base = ['relative overflow-hidden'];
 
