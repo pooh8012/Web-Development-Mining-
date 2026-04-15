@@ -51,7 +51,7 @@ export default function HeroSection() {
           and conceptual intersections of resource mining and data mining. Our
           goal is to shed light on the social, economic, and environmental
           impacts of systems that create value by extracting and manipulating
-          material that has been construed as “raw” and open to exploitation.
+          material that has been a construed as “raw” and open to exploitation.
         </motion.p>
 
         <motion.div
