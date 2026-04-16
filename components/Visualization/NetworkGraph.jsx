@@ -266,12 +266,13 @@ import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import useD3 from '../../hooks/useD3';
 
-// Import BOTH datasets
+// Import ALL datasets
 import fullData from '../../Network_Test_1/MiningApril26.json';
 import testData from '../../Network_Test_1/MiningApril27.json';
+import experiment2 from '../../Network_Test_1/Experiment2.json';
 
 // ----- MERGE RAW DATA -----
-const RAW_NODES = [...fullData.nodes, ...testData.nodes];
+const RAW_NODES = [...fullData.nodes, ...testData.nodes, ...experiment2.nodes];
 
 // Dedup nodes
 const NODE_MAP = RAW_NODES.reduce((acc, n) => {
@@ -283,7 +284,8 @@ const MERGED_NODES = Object.values(NODE_MAP);
 // Merge edges (edges or links)
 const fullEdges = fullData.edges || fullData.links || [];
 const testEdges = testData.edges || testData.links || [];
-const RAW_EDGES = [...fullEdges, ...testEdges];
+const exp2Edges = experiment2.edges || experiment2.links || [];
+const RAW_EDGES = [...fullEdges, ...testEdges, ...exp2Edges];
 
 // Dedup edges
 const EDGE_MAP = RAW_EDGES.reduce((acc, e) => {
@@ -308,6 +310,7 @@ const TYPE_COLORS = {
   editoriales: '#FBCFE8',
   revistas: '#C7D2FE',
   tipo_de_representacion: '#A5F3FC',
+  Experiment2: '#FCA5A5',
 };
 
 const DEFAULT_COLOR = '#E5E7EB';
@@ -383,8 +386,12 @@ export default function NetworkGraph({ confidenceThreshold = 50 }) {
 
       // ---- MAP EDGES ----
       const linksAll = MERGED_EDGES.map((e) => {
+        const idStr = String(e.id ?? '');
+        const isExp2 = idStr.startsWith('exp2-');
         const keyNum = parseInt(e.id, 10);
-        const confidence = Number.isFinite(keyNum)
+        const confidence = isExp2
+          ? 100
+          : Number.isFinite(keyNum)
           ? Math.abs(keyNum) % 100
           : Math.floor(Math.random() * 100);
 
