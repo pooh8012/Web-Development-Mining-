@@ -5,11 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const navItems = [
   { href: '/', label: 'Home' },
-  { href: '/visualizations', label: 'Visualizations' },
-  { href: '/#about', label: 'About' },
-  { href: '/games', label: 'Games' },
-  { href: '/#team', label: 'Team' },
-  { href: '/project', label: 'Projects' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/team', label: 'Team' },
+  { href: '/visualizations', label: '3D Visualization' },
 ];
 
 export default function Navbar() {

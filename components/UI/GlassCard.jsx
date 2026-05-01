@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import NeonButton from '../UI/NeonButton';
+import NeonButton from './NeonButton';
 import GameEmbed from '../games/GameEmbed';
 
 export default function GameCard({ game }) {

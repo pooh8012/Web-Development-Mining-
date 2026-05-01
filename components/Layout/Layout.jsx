@@ -208,9 +208,10 @@ export default function Layout({ children }) {
   const router = useRouter();
 
   const isGamePage =
-    router.pathname.startsWith('/games/') &&
+    (router.pathname.startsWith('/games/') &&
     router.pathname !== '/games' &&
-    router.pathname !== '/games/';
+    router.pathname !== '/games/') ||
+    router.pathname === '/projects/collage';
 
   return (
     <div className="min-h-screen relative overflow-hidden">

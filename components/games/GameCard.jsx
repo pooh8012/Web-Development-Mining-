@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import GlassCard from "../UI/GlassCard";
-import NeonButton from "../UI/NeonButton";
-import GameEmbed from "./GameEmbed";
-import Link from "next/link";
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import GlassCard from '../UI/GlassCard';
+import NeonButton from '../UI/NeonButton';
+import GameEmbed from './GameEmbed';
+import Link from 'next/link';
 
 export default function GameCard({ game }) {
   const [showGameModal, setShowGameModal] = useState(false);
@@ -20,7 +20,7 @@ export default function GameCard({ game }) {
         >
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="text-5xl sm:text-6xl opacity-50">
-              {game.icon || "🎮"}
+              {game.icon || '🎮'}
             </span>
           </div>
 
@@ -85,7 +85,7 @@ export default function GameCard({ game }) {
             onClick={() => setShowInstructions((v) => !v)}
             className="w-full text-xs text-gray-400 hover:text-accent-neon transition-colors"
           >
-            {showInstructions ? "Hide" : "Show"} Instructions
+            {showInstructions ? 'Hide' : 'Show'} Instructions
           </button>
         </div>
 
@@ -94,7 +94,7 @@ export default function GameCard({ game }) {
           {showInstructions && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
+              animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               className="mt-3 overflow-hidden"
             >
@@ -104,9 +104,9 @@ export default function GameCard({ game }) {
                   {game.instructions?.length
                     ? game.instructions.map((t, i) => <li key={i}>{t}</li>)
                     : [
-                        "Click Play on site",
-                        "Use full-screen for best experience",
-                        "Enjoy!",
+                        'Click Play on site',
+                        'Use full-screen for best experience',
+                        'Enjoy!',
                       ]}
                 </ol>
               </div>

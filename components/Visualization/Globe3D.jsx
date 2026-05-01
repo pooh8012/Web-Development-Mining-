@@ -176,9 +176,12 @@ export default function Globe3D() {
         };
 
         function updatePoints() {
+          // Use geoDistance to determine if a point is on the visible hemisphere
+          const rotationCenter = projection.rotate();
           const visiblePoints = companyData.filter((d) => {
-            const coords = projection(d.coords);
-            return coords && projection.invert(coords);
+            // geoDistance returns radians; > π/2 means the point is on the far side
+            const dist = d3.geoDistance(d.coords, [-rotationCenter[0], -rotationCenter[1]]);
+            return dist < Math.PI / 2;
           });
 
           const points = pointsGroup
@@ -187,41 +190,17 @@ export default function Globe3D() {
 
           points.exit().remove();
 
-          const colorByType = {
-            Mining: '#ff6b6b',
-            DataMining: '#00d4ff',
-            AI: '#b26bff',
-          };
-
-          // Enter + update
-          points
+          const entered = points
             .enter()
             .append('circle')
-            .merge(points)
-            .attr('cx', (d) => projection(d.coords)[0])
-            .attr('cy', (d) => projection(d.coords)[1])
-            .attr('r', 5.5) // increased from 3
+            .attr('r', 5.5)
             .style('fill', (d) => colorByType[d.type] || '#00d4ff')
             .style('opacity', 1)
             .style(
               'filter',
               (d) => `drop-shadow(0 0 8px ${colorByType[d.type] || '#00d4ff'})`
             )
-            .transition()
-            .duration(1000)
-            .ease(d3.easeSinInOut)
-            .attr('r', 6)
-            .transition()
-            .duration(1000)
-            .ease(d3.easeSinInOut)
-            .attr('r', 5.5)
-            .on('end', function () {
-              d3.select(this).transition().duration(1000).ease(d3.easeSinInOut);
-            });
-
-          // Hover interaction
-          pointsGroup
-            .selectAll('circle')
+            .style('cursor', 'pointer')
             .on('mouseover', function (event, d) {
               d3.select(this)
                 .transition()
@@ -239,7 +218,7 @@ export default function Globe3D() {
                 confidence: d.confidence,
               });
             })
-            .on('mouseout', function () {
+            .on('mouseout', function (event, d) {
               d3.select(this)
                 .transition()
                 .duration(200)
@@ -247,11 +226,15 @@ export default function Globe3D() {
                 .style('opacity', 1)
                 .style(
                   'filter',
-                  (d) =>
-                    `drop-shadow(0 0 8px ${colorByType[d.type] || '#00d4ff'})`
+                  `drop-shadow(0 0 8px ${colorByType[d.type] || '#00d4ff'})`
                 );
               setSelectedCountry(null);
             });
+
+          // Merge enter + update and reproject positions
+          entered.merge(points)
+            .attr('cx', (d) => projection(d.coords)[0])
+            .attr('cy', (d) => projection(d.coords)[1]);
         }
 
         // Rotation interaction
